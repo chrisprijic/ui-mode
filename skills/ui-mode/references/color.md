@@ -1,29 +1,29 @@
 # Color
 
-All color work happens in OKLCH: `L` is perceived lightness (0 black → 1 white), `C` is chroma, `h` is hue. Equal steps in `L` look like equal steps, which hex and HSL can't promise. Judgment lives in `principles/palette.md`; this file holds the tokens.
+All color work happens in OKLCH: `L` is perceived lightness (0 is black, 1 is white), `C` is chroma, `h` is hue. Equal steps in `L` look like equal steps, which hex and HSL can't promise. Judgment lives in `principles/palette.md`; this file holds the tokens.
 
 ## Inventory
 Define these before any styling:
 
 | Group | Steps | Job |
 |---|---|---|
-| Neutrals (tinted toward the brand hue) | 11 (50–950) | surfaces, text tiers, borders, controls |
-| Primary | 11 (50–950) | actions, focus, selection, links |
+| Neutrals (tinted toward the brand hue) | 11 (50-950) | surfaces, text tiers, borders, controls |
+| Primary | 11 (50-950) | actions, focus, selection, links |
 | Danger, warning, success, info | 11 each | destructive and error, caution, done, neutral notices |
 | Data accents | as many series as the charts need | charts, tags, categories |
 
-Product UI is overwhelmingly neutral: color covers a few percent of the pixels and every colored pixel signals state, meaning, or data. Colorful splits like 60-30-10 belong to marketing pages.
+Product UI is overwhelmingly neutral. Color covers a few percent of the pixels, and every colored pixel signals state, meaning, or data. Colorful splits like 60-30-10 belong to marketing pages.
 
 ## Ramps
 A **ramp** is an 11-step scale, 50 (lightest) to 950 (darkest). Build every ramp before the first screen, then freeze it.
 
-1. **Anchor 600.** Pick the color that will fill a solid button. It must carry white text at 4.5:1 or better (≈ L 0.52–0.56).
-2. **Set the ends by hand.** 50 is a tint you could use as a page wash (L ≈ 0.97); 950 is dark enough for text on that tint (L ≈ 0.24).
-3. **Space the lightness.** Fill the steps between so `L` drops in near-even increments, slightly wider in the middle.
-4. **Shape the chroma.** Peak chroma at 500–600 and taper toward both ends, but keep the ends colored: 50 at C ≥ 0.015, 950 at C ≥ 0.06. A ramp whose ends go gray reads washed out at the top and muddy at the bottom.
-5. **Hold the hue.** OKLCH keeps perceived hue stable, so most ramps need no drift. If a step looks off-hue (yellows turning green when dark, blues turning purple when light), nudge `h` by up to 8° across the whole ramp.
-6. **Clip to gamut.** Where a step falls outside sRGB, lower its chroma rather than shifting its lightness.
-7. **Freeze.** No new shade enters mid-build. A missing shade means the ramp needs another look, not an inline hex.
+1. Anchor 600. Pick the color that will fill a solid button. It must carry white text at 4.5:1 or better (≈ L 0.52-0.56).
+2. Set the ends by hand. 50 is a tint you could use as a page wash (L ≈ 0.97); 950 is dark enough for text on that tint (L ≈ 0.24).
+3. Space the lightness. Fill the steps between so `L` drops in near-even increments, slightly wider in the middle.
+4. Shape the chroma. Peak chroma at 500-600 and taper toward both ends, but keep the ends colored: 50 at C ≥ 0.015, 950 at C ≥ 0.06. A ramp whose ends go gray reads washed out at the top and muddy at the bottom.
+5. Hold the hue. OKLCH keeps perceived hue stable, so most ramps need no drift. If a step looks off-hue (yellows turning green when dark, blues turning purple when light), nudge `h` by up to 8° across the whole ramp.
+6. Clip to gamut. Where a step falls outside sRGB, lower its chroma rather than shifting its lightness.
+7. Freeze. No new shade enters mid-build. A missing shade sends you back to the ramp; never patch it with an inline hex.
 
 Worked example, a blue at h 262:
 
@@ -41,10 +41,10 @@ Worked example, a blue at h 262:
 | 900 | 0.32 | 0.11 | text on tint |
 | 950 | 0.24 | 0.08 | darkest text, dark-mode tint background |
 
-**Roles by step:** solid fill 600 · hover 700 · pressed 800 · tint background 50/100 · text on tint 800/900 · links 600 (light) / 400 (dark) · dark-mode accent 400, its hover 300.
+Roles by step: solid fill 600 · hover 700 · pressed 800 · tint background 50/100 · text on tint 800/900 · links 600 (light) / 400 (dark) · dark-mode accent 400, its hover 300.
 
 ## Neutrals
-Tint every gray toward the brand hue at C 0.005–0.015: cool brands get cool grays, warm brands warm ones. Pure `#000` and pure gray read as unconsidered.
+Tint every gray toward the brand hue at C 0.005-0.015: cool brands get cool grays, warm brands warm ones. Pure `#000` and pure gray read as unconsidered.
 
 | Token | Light (L) | Dark (L) | Use |
 |---|---|---|---|
@@ -63,26 +63,26 @@ Tint every gray toward the brand hue at C 0.005–0.015: cool brands get cool gr
 - Buttons rise in darkness with importance: ghost (no fill), `subtle` fill, then solid 600 or `fg-1` fill with white text.
 
 ## Contrast
-- **Text:** 4.5:1. Large text (≥ 24px, or ≥ 18.66px bold): 3:1. UI graphics, input outlines that identify the control, and focus rings: 3:1 (WCAG 2.2).
-- **White on a mid-tone fails?** Invert the pairing: 800/900 text on a 50/100 tint of the same hue. Keep white-on-600 for the primary action.
-- **Secondary text on a colored surface** uses the surface's own hue, lighter or darker, at reduced chroma. Gray on color looks dirty and usually fails contrast.
-- **Colored text on a colored surface:** move the text further along the same ramp (e.g. 900 on 100) before reaching for white.
-- **Meaning needs two channels.** Pair every color signal with an icon, a word, a weight, or a pattern. In charts, separate series by lightness as well as hue.
-- **A brand color that fails** gets adapted, not shipped: use the next darker step for text and keep the brand step for fills.
-- **Multi-color layouts:** check every chip and tinted-card pair. Five different accent tints on five cards is five contrast checks, and some will fail.
+- Text needs 4.5:1, and large text (≥ 24px, or ≥ 18.66px bold) needs 3:1. UI graphics, input outlines that identify the control, and focus rings need 3:1 (WCAG 2.2).
+- If white on a mid-tone fails, invert the pairing: 800/900 text on a 50/100 tint of the same hue. Keep white-on-600 for the primary action.
+- Secondary text on a colored surface uses the surface's own hue, lighter or darker, at reduced chroma. Gray on color looks dirty and usually fails contrast.
+- For colored text on a colored surface, move the text further along the same ramp (e.g. 900 on 100) before reaching for white.
+- Meaning needs two channels. Pair every color signal with an icon, a word, a weight, or a pattern. In charts, separate series by lightness as well as hue.
+- If a brand color fails, adapt it. Use the next darker step for text and keep the brand step for fills.
+- In multi-color layouts, check every chip and tinted-card pair. Five different accent tints on five cards is five contrast checks, and some will fail.
 
 ## Where color goes
 - Before adding a color, answer: *what does this tell the user?* No answer, no color.
-- **Icons:** `fg-2` by default; colored only for active, selected, or status.
-- **Surfaces:** neutral. Large saturated backgrounds belong to marketing bands and hero moments.
-- **App screens:** color comes from data (status, charts, urgency), not decoration.
-- **Small purposeful spots:** the focus ring, a "New" chip, an announcement bar, the selected nav item.
-- **Semantic hues:** red = danger or destructive, amber = warning, green = success, blue = informational or neutral link. Destructive actions are red even when the brand is red-adjacent or purple; the brand hue never marks a destructive action.
+- Icons are `fg-2` by default and take color only for active, selected, or status.
+- Surfaces stay neutral. Large saturated backgrounds belong to marketing bands and hero moments.
+- On app screens, color comes from data (status, charts, urgency), never from decoration.
+- Small purposeful spots can take color: the focus ring, a "New" chip, an announcement bar, the selected nav item.
+- Semantic hues: red = danger or destructive, amber = warning, green = success, blue = informational or neutral link. Destructive actions are red even when the brand is red-adjacent or purple; the brand hue never marks a destructive action.
 
 ## States
 | State | Light | Dark |
 |---|---|---|
-| Hover | one step darker (600 → 700) or `subtle` fill on ghost | one step lighter (400 → 300) |
+| Hover | one step darker (600 to 700) or `subtle` fill on ghost | one step lighter (400 to 300) |
 | Pressed | two steps darker (800) | 200 |
 | Selected | 50/100 tint + 700 text or a 600 indicator | 950 tint + 300 text |
 | Focus | 2px ring in 600 (light) / 400 (dark), 2px offset, ≥ 3:1 against the adjacent surface | same |
@@ -91,28 +91,28 @@ Tint every gray toward the brand hue at C 0.005–0.015: cool brands get cool gr
 On touch, pressed does the job hover does with a pointer.
 
 ## Dark mode
-Dark mode is a sibling palette, not an inversion.
-- **Wider steps.** Adjacent surfaces differ by 0.03–0.04 L (vs ~0.015–0.02 in light) so layers stay distinguishable.
-- **Elevation lightens.** Each raised layer adds 0.03–0.04 L and slightly lowers chroma. See `depth.md` (Dark mode).
-- **Text dims.** `fg-1` at L 0.93, not pure white; reserve the brightest white for one element per screen, if any.
-- **Borders brighten** relative to the surface (L 0.30), stopping short of harsh white lines.
-- **Accent moves to 400,** hover 300, with chroma lowered 10–20% so it doesn't vibrate.
-- **Chips and tints:** dark tinted background (900/950 at low chroma) with light text (200/300).
-- **Neutrals keep the brand tint.** Deep tinted backgrounds (plum, forest, ink) are valid, not only navy-gray.
+Build dark mode as a sibling palette. Inverting the light one doesn't work.
+- Steps get wider. Adjacent surfaces differ by 0.03-0.04 L (vs ~0.015-0.02 in light) so layers stay distinguishable.
+- Elevation lightens. Each raised layer adds 0.03-0.04 L and slightly lowers chroma. See `depth.md` (Dark mode).
+- Text dims, with `fg-1` at L 0.93 instead of pure white. Reserve the brightest white for one element per screen, if any.
+- Borders brighten relative to the surface (L 0.30), stopping short of harsh white lines.
+- The accent moves to 400 and its hover to 300, with chroma lowered 10-20% so it doesn't vibrate.
+- Chips and tints use a dark tinted background (900/950 at low chroma) with light text (200/300).
+- Neutrals keep the brand tint. Deep tinted backgrounds (plum, forest, ink) work as well as navy-gray.
 - Follow the system setting by default (`prefers-color-scheme`); offer an override.
 
 ## Charts
-- **Series palette:** fix L (≈ 0.62–0.70) and C (≈ 0.14–0.18) in OKLCH and step the hue 25–40° per series, so no series shouts louder than another. HSL equal-lightness palettes make greens and yellows glare.
+- For the series palette, fix L (≈ 0.62-0.70) and C (≈ 0.14-0.18) in OKLCH and step the hue 25-40° per series, so no series shouts louder than another. HSL equal-lightness palettes make greens and yellows glare.
 - Avoid a single-ramp palette for categories (adjacent series become indistinguishable) and all-gray palettes (lifeless).
-- **Comparison period:** `fg-3` line, dashed or thinner.
-- **Color-blind safety:** vary lightness between adjacent series and add direct labels or markers.
-- Sequential data (low → high) uses one ramp; diverging data uses two ramps meeting at a neutral midpoint.
+- The comparison period is a `fg-3` line, dashed or thinner.
+- For color-blind safety, vary lightness between adjacent series and add direct labels or markers.
+- Sequential data (low to high) uses one ramp; diverging data uses two ramps meeting at a neutral midpoint.
 
 ## Theming
-To derive a themed neutral set from a base one: keep each step's L, raise C by about 0.01–0.02, and set h to the theme hue. Re-check `fg-3` contrast afterward.
+To derive a themed neutral set from a base one: keep each step's L, raise C by about 0.01-0.02, and set h to the theme hue. Re-check `fg-3` contrast afterward.
 
 ## Backgrounds and decoration
-- **Gradients:** stay within one hue family (endpoints ≤ 30° apart in h) or move along one ramp. Cross-spectrum gradients (blue → green → amber) read as default-generator output.
-- **Section bands:** alternate `bg` and `subtle`, or a 50 tint, to separate long-page sections without lines.
-- **Texture:** noise at 2–4% opacity, or a faint grid/dot pattern at ≤ 6% opacity. Visible grain is too much.
-- **Presentation shots only:** a darkened, desaturated accent backdrop (light) or large blurred accent shapes behind the UI (dark).
+- Gradients stay within one hue family (endpoints ≤ 30° apart in h) or move along one ramp. Cross-spectrum gradients (blue to green to amber) read as default-generator output.
+- Section bands alternate `bg` and `subtle`, or use a 50 tint, to separate long-page sections without lines.
+- For texture, use noise at 2-4% opacity or a faint grid/dot pattern at ≤ 6% opacity. Visible grain is too much.
+- Only presentation shots get a darkened, desaturated accent backdrop (light) or large blurred accent shapes behind the UI (dark).

@@ -5,7 +5,7 @@ description: UI design mode that sets the process and done bar for UI work. Use 
 
 # UI mode
 
-An interface in this mode is decided, not decorated:
+An interface built in this mode is decided throughout, with nothing added as decoration:
 - every element has a reason the user would recognize
 - every value is a **token**
 - every screen and control has its full **state set**
@@ -21,17 +21,17 @@ Open a todo list whose first items are the playbook's steps, copied verbatim, be
 
 ## Non-negotiables
 
-- **Open by restating** the user's goal, the surface (landing, app, mobile, desktop, AI product, or process), and the smallest UI that meets the goal.
-- **The repo's design system comes first.** Read its tokens and components before anything else. Where they conflict with this mode, keep theirs and flag the conflict.
-- **Tokens before styling** (**System**). Color, size, space, radius, shadow, and motion values all come from named tokens.
-- **Every color sits on a ramp and has a job** (**Palette**). Treat any generated or default palette as a draft you inspect.
-- **Full state sets and visible responses** (**Silence**). Every interactive element has its states; every action shows a result within 100ms.
-- **Honest levers only** (**Nudge**). Every claim on screen is true today, and declining takes one neutral tap.
-- **Destructive actions read as destructive:** red-coded, ranked by their place on the page, never in the brand color. Undo beats a confirm step unless the action is irreversible (**Emphasis**, **Silence**).
-- **Done means seen.** Render the real UI and look at it at 1440×900 and 390×844, plus 1920×1080 for wide layouts, in light and dark mode when both exist (**Reality**).
+- Open by restating the user's goal, the surface (landing, app, mobile, desktop, AI product, or process), and the smallest UI that meets the goal.
+- The repo's design system comes first. Read its tokens and components before anything else. Where they conflict with this mode, keep theirs and flag the conflict.
+- Tokens come before styling (**System**). Color, size, space, radius, shadow, and motion values all come from named tokens.
+- Every color sits on a ramp and has a job (**Palette**). Treat any generated or default palette as a draft you inspect.
+- Every interactive element has its full state set, and every action shows a result within 100ms (**Silence**).
+- Use only honest levers (**Nudge**). Every claim on screen is true today, and declining takes one neutral tap.
+- Destructive actions read as destructive. They're red-coded, ranked by their place on the page, and never in the brand color. Prefer undo to a confirm step unless the action is irreversible (**Emphasis**, **Silence**).
+- Done means seen. Render the real UI and look at it at 1440×900 and 390×844, plus 1920×1080 for wide layouts, in light and dark mode when both exist (**Reality**).
   - Use what the harness offers: a preview or browser tool, a control skill, or a screenshot script.
   - When you can't render, say what's missing and label visual claims unverified.
-- **Name your reasons.** In the reply, name each principle that shaped a decision and the choice it changed. Cite only principles whose leaf you read this session.
+- Name your reasons. In the reply, name each principle that shaped a decision and the choice it changed. Cite only principles whose leaf you read this session.
 
 ## Principles
 
@@ -92,11 +92,11 @@ Numbers in the references are working defaults. A repo's own tokens override the
 ## Writing the reply
 
 - Follow the playbook's **Reply** section.
-- **Values carry units,** and every fix names a value.
-- **Visual claims come from a render you saw;** label anything else unverified.
-- **Changed UI ships with before/after proof:** each changed screen's before and after shots, captioned with viewport and theme. Show them inline when the harness displays images; otherwise give their paths and offer to show them.
+- Values carry units, and every fix names a value.
+- Visual claims come from a render you saw; label anything else unverified.
+- Changed UI ships with before/after proof, a before and an after shot of each changed screen, captioned with viewport and theme. Show them inline when the harness displays images; otherwise give their paths and offer to show them.
 
 ## Pairing
 
-- **poteto-mode** governs engineering process and code; ui-mode governs the UI process and its done bar. With both active, poteto's Feature or Prototype playbook runs, and the ui-mode build steps fill its design steps.
-- **frontend-design** pushes aesthetic direction (mood, typeface personality) when the user loops it in. ui-mode still owns the process and the done bar; that direction feeds the personality in build step 2.
+- poteto-mode governs engineering process and code; ui-mode governs the UI process and its done bar. With both active, poteto's Feature or Prototype playbook runs, and the ui-mode build steps fill its design steps.
+- frontend-design pushes aesthetic direction (mood, typeface personality) when the user loops it in. ui-mode still owns the process and the done bar; that direction feeds the personality in build step 2.

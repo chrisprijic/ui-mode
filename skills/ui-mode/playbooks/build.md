@@ -1,6 +1,6 @@
 ### Build
 
-**You own the design decisions. The result is decided throughout: every element, value, state, and action.**
+You own the design decisions. The result is decided throughout: every element, value, state, and action.
 
 Each step names the principles it applies; read those leaves before the step.
 
