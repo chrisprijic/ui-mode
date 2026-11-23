@@ -1,6 +1,6 @@
 # Tells
 
-A **tell** is a visible symptom of a UI nobody decided. This is the checklist for the review sweep (steps 3–4 of `playbooks/review.md`) and every build's self-review. Mark each row **hit** or **clear** by its ID; the review's Sweep line lists every hit ID, so no row goes unread. Fixes are short; the referenced section holds the values.
+A **tell** is a visible symptom of a UI nobody decided. This is the checklist for the review sweep (steps 3-4 of `playbooks/review.md`) and every build's self-review. Mark each row **hit** or **clear** by its ID; the review's Sweep line lists every hit ID, so no row goes unread. Fixes are short; the referenced section holds the values.
 
 ## Think
 
@@ -18,11 +18,11 @@ A **tell** is a visible symptom of a UI nobody decided. This is the checklist fo
 | T10 | Related choices split across screens; results hidden while choosing | Decide | One surface for connected choices, results in view (`components.md` Filters) |
 | T11 | Commit button hides the outcome ("Submit", "Continue", "Apply") | Decide | Name action, object, and amount: "Book desk · Thu 9:00", "Show 18 bikes" |
 | T12 | Asks for a value the user doesn't know (max loan amount, wattage) | Decide | Ask what they know (monthly payment, room size) and compute the rest |
-| T13 | A range where one number per option is possible ("$40–60") | Decide | One number per option, with its context |
+| T13 | A range where one number per option is possible ("$40-60") | Decide | One number per option, with its context |
 | T14 | Paywall leads with a feature list and a monthly price | Decide | Lead with how the trial runs, as a timeline (`processes.md` Selling) |
 | T15 | The objection that stalls the choice goes unanswered at the CTA | Decide | Answer it under the button: "Cancel before Jun 3, pay nothing" |
 | T16 | Free typing where choosing works (country, job role, recent payee) | Decide | Common options as taps or autocomplete, plus "Other" |
-| T17 | New and power users see the same home | Decide | Adapt home by stage: setup → today → stats |
+| T17 | New and power users see the same home | Decide | Adapt home by stage: setup -> today -> stats |
 
 ## See
 
@@ -52,7 +52,7 @@ A **tell** is a visible symptom of a UI nobody decided. This is the checklist fo
 | T39 | Labels the layout already implies | Subtract | Remove them |
 | T40 | Glow, multi-hue gradients, decorative shadows | Subtract | One hue or none; elevation tokens only |
 | T41 | Cards that do nothing; the same KPI cards repeated across pages | Subtract | Delete or merge; pick a better visualization |
-| T42 | Too many options (5+ plans, 6+ tabs) | Subtract | 3–4 plans; ≤5 tabs |
+| T42 | Too many options (5+ plans, 6+ tabs) | Subtract | 3-4 plans; ≤5 tabs |
 | T43 | Numbers left-aligned in tables or stats | Scan | Right-align with `tabular-nums` |
 | T44 | A centered block longer than ~3 lines | Scan | Left-align it, or cut it to ≤3 short lines |
 | T45 | Fixed value sets as plain text; people as name strings | Scan | Chips; avatars |
@@ -62,8 +62,8 @@ A **tell** is a visible symptom of a UI nobody decided. This is the checklist fo
 | T49 | Off-scale values (13px, 22px, 37px) | Space | Spacing tokens |
 | T50 | Everything stretched to the viewport; sidebar in % | Space | Max-widths; fixed sidebar; split into columns (`layout.md` Width) |
 | T51 | Cramped everywhere, or huge gaps around huge text | Space | Start generous, tighten; pull related items together |
-| T52 | Lines over ~75 characters; any paragraph without a `max-width` | Type | Every text block capped at 45–75ch, target ~66ch |
-| T53 | Tight body line height or loose heading line height | Type | Body 1.5–1.6; headings 1.15–1.25 (`type.md` Rhythm) |
+| T52 | Lines over ~75 characters; any paragraph without a `max-width` | Type | Every text block capped at 45-75ch, target ~66ch |
+| T53 | Tight body line height or loose heading line height | Type | Body 1.5-1.6; headings 1.15-1.25 (`type.md` Rhythm) |
 | T54 | Mixed sizes on one line centered vertically | Type | Align to the baseline |
 | T55 | All-caps text at default tracking | Type | +0.06 to +0.1em |
 | T56 | Display headlines (≥36px) at default tracking | Type | −0.01 to −0.02em |
@@ -71,14 +71,14 @@ A **tell** is a visible symptom of a UI nobody decided. This is the checklist fo
 | T58 | Links inside body text indistinguishable from text | Type | Color plus underline |
 | T59 | Display or script face used for body or UI text | Type | A neutral UI sans for running text (`type.md` Fonts) |
 | T60 | Three or more font families | Type | One family, two at most, plus optional mono |
-| T61 | Inconsistent shadows; more than one light direction | Depth | One light from above; `shadow-1…5` (`depth.md` Elevation) |
+| T61 | Inconsistent shadows; more than one light direction | Depth | One light from above; `shadow-1` to `shadow-5` (`depth.md` Elevation) |
 | T62 | Heavy default shadows that read before the content | Depth | Elevation tokens: low alpha, more blur, tinted color |
 | T63 | Shadows doing the elevation work in dark mode | Depth | Lighter surface plus 1px border (`depth.md` Dark mode) |
 | T64 | Emoji as the icon system; mixed icon styles | System | One icon library, one stroke weight (`imagery.md` Icons) |
 | T65 | Mixed radii; square images beside rounded buttons | System | One control radius; nested = outer − padding (`layout.md` Radius) |
 | T66 | Raw values with no token | System | Tokenize, or map to the repo's system |
 | T67 | Stepper for a value the user knows; slider for frequent precise entry | Scan | Pick by how the value is known (`components.md` Input choice) |
-| T68 | A dropdown hiding 2–6 options; filter and sort buried in menus | Scan | Visible segments or cards; quick-filter chips plus Filter and Sort |
+| T68 | A dropdown hiding 2-6 options; filter and sort buried in menus | Scan | Visible segments or cards; quick-filter chips plus Filter and Sort |
 | T69 | Tab bar: active tab differs by one cue; inactive icons under 3:1; a color per tab | Emphasis | Two active cues; inactive ≥3:1; neutral bar (`mobile.md`) |
 | T70 | Tab bar holds Help, Logout, Back, or a logo; a raised "+" for a rare action | Opinion | Top-level destinations only; inline create only when it's the top job |
 | T71 | Tab bar blends into the content above it | Depth | Hairline border, tinted fill, or soft upward shadow |
@@ -142,6 +142,6 @@ A **tell** is a visible symptom of a UI nobody decided. This is the checklist fo
 | T119 | A long page on one flat background | Finish | Alternate section surfaces; subtle single-hue texture |
 | T120 | Icons over photos that vanish on light images | Reality | A filled backing shape; test on the brightest image |
 | T121 | Catalog photos with mixed backgrounds, light, and framing | Reality | One image spec (`imagery.md` Catalog) |
-| T122 | Appetite photos shrunk so more rows fit above the fold | Reality | The photo leads the card; the fold is a bar, not a quota |
+| T122 | Appetite photos shrunk so more rows fit above the fold | Reality | The photo leads the card; let rows fall below the fold |
 | T123 | Name and price printed over an uploaded photo | Reality | Text below the photo |
 | T124 | A long mobile detail page with no sticky action | Reality | Sticky bottom bar with price and CTA (`mobile.md`) |
