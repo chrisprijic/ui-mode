@@ -9,22 +9,40 @@ layout the [`skills` CLI](https://github.com/vercel-labs/skills) discovers.
 
 ## Install
 
+The CLI needs Node.js 22.20 or later.
+
 ```sh
-npx skills add chrisprijic/ui-mode              # pick agents interactively
-npx skills add chrisprijic/ui-mode -g -y        # all detected agents, user-level
-npx skills add chrisprijic/ui-mode --list       # list skills without installing
+npx skills add chrisprijic/ui-mode                       # pick skills and agents interactively
+npx skills add chrisprijic/ui-mode -g -a claude-code -y  # Claude Code, user-level, no prompts
+npx skills add chrisprijic/ui-mode --list                # list skills without installing
 ```
 
-The repository is private for now, so the clone needs GitHub access (`gh auth login` or an
-SSH key). `npx skills update` pulls new versions.
+Swap `claude-code` for your agent (`codex`, `cursor`, and the rest of the CLI's
+[supported agents](https://github.com/vercel-labs/skills/blob/main/docs/agents.md)).
+`npx skills update` pulls new versions.
 
 Without the CLI, copy or link `skills/ui-mode` into your agent's skills folder, for example
 `~/.claude/skills/ui-mode`.
 
 ## Add a skill
 
-Create `skills/<name>/SKILL.md` with `name: <name>` in its frontmatter, matching the folder.
-Keep relative links inside the skill folder so they survive installation.
+Create `skills/<name>/SKILL.md` with `name: <name>` (matching the folder) and `license: MIT`
+in its frontmatter. Keep relative links inside the skill folder so they survive installation.
+
+## Check
+
+```sh
+npm run check
+```
+
+Node 22 or later, no dependencies. It validates every skill, then runs the tests:
+
+- frontmatter, relative links, and every `` `file.md` (Section) `` reference
+- the counts the docs state in prose: tells, principles, build steps
+- ui-mode's color tokens: WCAG contrast for each documented pairing and the sRGB gamut of the
+  worked ramp, computed from the tables in `references/color.md` rather than trusted
+
+CI runs it on every push to `main` and every pull request.
 
 ## License
 
