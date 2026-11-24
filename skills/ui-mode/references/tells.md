@@ -30,7 +30,7 @@ A **tell** is a visible symptom of a UI nobody decided. This is the checklist fo
 |---|---|---|---|
 | T18 | Everything emphasized: every chip colored, bold everywhere | Emphasis | Rank, then quiet the neighbors (`color.md` States) |
 | T19 | Hierarchy carried by size alone | Emphasis | Rank with weight and the `fg-1/2/3` tiers (`color.md` Neutrals) |
-| T20 | More than ~6 font sizes on one screen | Type | Snap every size to the scale (`type.md` Scale) |
+| T20 | More than 5 font sizes on an app screen, or 6 on a marketing page | Type | Snap every size to the scale (`type.md` Scale) |
 | T21 | UI text under weight 400 | Emphasis | 400+; de-emphasize with `fg-2`/`fg-3` or a smaller size |
 | T22 | Bold heading above a washed-out paragraph | Emphasis | Size carries the heading; paragraph at `fg-1` |
 | T23 | `Label: value` pairs everywhere | Emphasis | Format values to explain themselves, or fold the label into the value ("Due Fri") |

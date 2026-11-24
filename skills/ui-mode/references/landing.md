@@ -14,7 +14,7 @@ A landing page argues for one action, section by section. Visitors judge the pro
 
 ## Hero
 - A hero has four parts: nav, message, proof (logos, rating, a number), and the visual. The message shares the space with the other three.
-- The headline runs ~4-8 words and promises one concrete outcome; one supporting sentence (~12-20 words) says how. Name the product's job, not its category ("Send invoices that get paid in days").
+- The headline promises one concrete outcome, and one supporting sentence says how (lengths in `type.md`, Copy). Name the product's job, not its category ("Send invoices that get paid in days").
 - Spacing: eyebrow to headline `space-3` (12px); headline to subtext `space-3`; subtext to buttons `space-6` (32px) or more, at least 2× the headline-to-subtext gap.
 - Use one solid primary button and one quiet secondary (ghost or outline). When the hero and nav buttons go to the same place, they share a label.
 - Pick the layout from the message's job:
