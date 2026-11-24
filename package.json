@@ -1,0 +1,15 @@
+{
+  "name": "ui-mode",
+  "private": true,
+  "description": "Agent skills for UI work: ui-mode build and review",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "validate": "node scripts/validate.mjs",
+    "test": "node --test \"scripts/test/*.test.mjs\"",
+    "check": "npm run validate && npm test"
+  }
+}
