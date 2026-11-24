@@ -1,4 +1,4 @@
-### Build
+# Build
 
 You own the design decisions. The result is decided throughout: every element, value, state, and action.
 

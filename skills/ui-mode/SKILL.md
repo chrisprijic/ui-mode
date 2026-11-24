@@ -1,6 +1,7 @@
 ---
 name: ui-mode
 description: UI design mode that sets the process and done bar for UI work. Use for /ui-mode build, /ui-mode review, or any request to make, restyle, polish, critique, or audit a UI.
+license: MIT
 ---
 
 # UI mode
@@ -95,8 +96,3 @@ Numbers in the references are working defaults. A repo's own tokens override the
 - Values carry units, and every fix names a value.
 - Visual claims come from a render you saw; label anything else unverified.
 - Changed UI ships with before/after proof, a before and an after shot of each changed screen, captioned with viewport and theme. Show them inline when the harness displays images; otherwise give their paths and offer to show them.
-
-## Pairing
-
-- poteto-mode governs engineering process and code; ui-mode governs the UI process and its done bar. With both active, poteto's Feature or Prototype playbook runs, and the ui-mode build steps fill its design steps.
-- frontend-design pushes aesthetic direction (mood, typeface personality) when the user loops it in. ui-mode still owns the process and the done bar; that direction feeds the personality in build step 2.
