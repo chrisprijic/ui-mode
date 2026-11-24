@@ -2,6 +2,8 @@
 
 A UI design mode for agents. It sets the process and the done bar for building and reviewing interfaces.
 
+**Status:** in active development, not yet stable. Principles, token values, tell IDs, and playbook steps can change without notice.
+
 | Capability | Trigger | What it does |
 |---|---|---|
 | Build | `/ui-mode build` | Designs and builds a UI in 12 steps, each with a "done when" check. It screenshots the existing UI first so the reply carries before/after proof, and ends by reviewing its own output. |

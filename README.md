@@ -3,6 +3,11 @@
 Agent skills for UI work. Each skill lives in `skills/<name>/` with its own `SKILL.md`, the
 layout the [`skills` CLI](https://github.com/vercel-labs/skills) discovers.
 
+> [!IMPORTANT]
+> **In active development, not yet stable.** Principles, token values, tell IDs, and playbook
+> steps can change between commits, and `npx skills update` takes whatever is on `main`. To
+> hold a version, pin a commit or tag (see [Install](#install)).
+
 | Skill | What it does |
 |---|---|
 | [`ui-mode`](skills/ui-mode/README.md) | UI design mode: `/ui-mode build` designs and builds a UI in 12 checked steps; `/ui-mode review` audits a real UI and returns ranked findings with concrete fixes. |
@@ -46,6 +51,7 @@ The CLI needs Node.js 22.20 or later.
 npx skills add chrisprijic/ui-mode                       # pick skills and agents interactively
 npx skills add chrisprijic/ui-mode -g -a claude-code -y  # Claude Code, user-level, no prompts
 npx skills add chrisprijic/ui-mode --list                # list skills without installing
+npx skills add chrisprijic/ui-mode@<sha> --skill ui-mode # pin a full commit SHA or a tag
 ```
 
 Swap `claude-code` for your agent (`codex`, `cursor`, and the rest of the CLI's
