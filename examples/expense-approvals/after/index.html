@@ -781,7 +781,8 @@ a { color: inherit; text-decoration: none; }
       return `<div class="panel-foot"><div class="decided-note">${icon('check-circle')}<span>Approved by you ${short(r.decidedAt)}. ${r.paidAt ? 'Paid out ' + short(r.paidAt) + '.' : 'Finance pays it in the next run.'}</span></div></div>`;
     }
     if (r.status === 'returned') {
-      return `<div class="panel-foot"><div class="decided-note">${icon('return')}<span>Returned to ${esc(fn)} ${short(r.decidedAt)}: ${esc(r.reason)}. Waiting on ${esc(fn)} to resubmit.</span></div></div>`;
+      const said = r.message ? ` You wrote: “${esc(r.message)}”` : '';
+      return `<div class="panel-foot"><div class="decided-note">${icon('return')}<span>Returned to ${esc(fn)} ${short(r.decidedAt)}: ${esc(r.reason)}.${said} Waiting on ${esc(fn)} to resubmit.</span></div></div>`;
     }
     if (S.returning) {
       return `<div class="panel-foot">
@@ -880,16 +881,21 @@ a { color: inherit; text-decoration: none; }
       }, 900);
     });
   }
-  function pick(r) { return { status: r.status, decidedAt: r.decidedAt, stage: r.stage, reason: r.reason }; }
+  function pick(r) { return { status: r.status, decidedAt: r.decidedAt, stage: r.stage, reason: r.reason, message: r.message }; }
+
+  /* While a sheet or drawer is open, everything behind its scrim is inert: no focus, no clicks. */
+  const behind = { panel: ['.skip', '.topbar', '#nav', '.queue'], nav: ['.skip', '.topbar', '.main'] };
+  function setBehind(which, on) { behind[which].forEach(s => { const el = $(s); if (el) el.inert = on; }); }
 
   function openPanel(id) {
     S.selectedId = id; S.returning = false; S.reason = null; S.msg = '';
     render();
-    if (narrow()) { $('#panel').classList.add('open'); $('#scrim').classList.add('on'); setTimeout(() => { const c = $('#panel [data-close]'); c && c.focus(); }, 50); }
+    if (narrow()) { $('#panel').classList.add('open'); $('#scrim').classList.add('on'); setBehind('panel', true); setTimeout(() => { const c = $('#panel [data-close]'); c && c.focus(); }, 50); }
   }
   function closeOverlays() {
     const wasPanel = $('#panel').classList.contains('open');
     $('#panel').classList.remove('open'); $('#nav').classList.remove('open'); $('#scrim').classList.remove('on');
+    setBehind('panel', false); setBehind('nav', false);
     $('#menuBtn').setAttribute('aria-expanded', 'false');
     if (wasPanel) { const b = document.querySelector(`[data-open="${S.selectedId}"]`); b && b.focus(); }
   }
@@ -903,7 +909,7 @@ a { color: inherit; text-decoration: none; }
     else if (d.approve) { if (narrow()) closeOverlays(); decide([d.approve], 'approved'); }
     else if (d.return) { S.returning = true; S.reason = byId(d.return).suggest || null; renderPanel(); const f = $('#panel .reasons input:checked') || $('#panel .reasons input'); f && f.focus(); }
     else if (d.cancelReturn !== undefined) { S.returning = false; S.reason = null; renderPanel(); const b = $('#panel [data-return]'); b && b.focus(); }
-    else if (d.confirmReturn) { S.msg = ($('#retMsg') || {}).value || ''; if (narrow()) closeOverlays(); decide([d.confirmReturn], 'returned', { reason: S.reason }); }
+    else if (d.confirmReturn) { const message = (($('#retMsg') || {}).value || '').trim() || null; if (narrow()) closeOverlays(); decide([d.confirmReturn], 'returned', { reason: S.reason, message }); }
     else if (d.close !== undefined) closeOverlays();
     else if (d.clear !== undefined) { S.q = ''; $('#search').value = ''; render(); $('#search').focus(); }
     else if (d.seg) { S.seg = d.seg; document.querySelector(`input[name="seg"][value="${d.seg}"]`).checked = true; render(); }
@@ -920,7 +926,7 @@ a { color: inherit; text-decoration: none; }
   $('#bulkClear').addEventListener('click', () => { S.picked.clear(); render(); });
   $('#bulkApprove').addEventListener('click', () => decide([...S.picked].sort((a, b) => Date.parse(byId(a).at) - Date.parse(byId(b).at)), 'approved'));
   $('#scrim').addEventListener('click', closeOverlays);
-  $('#menuBtn').addEventListener('click', () => { $('#nav').classList.add('open'); $('#scrim').classList.add('on'); $('#menuBtn').setAttribute('aria-expanded', 'true'); $('#nav a').focus(); });
+  $('#menuBtn').addEventListener('click', () => { $('#nav').classList.add('open'); $('#scrim').classList.add('on'); setBehind('nav', true); $('#menuBtn').setAttribute('aria-expanded', 'true'); $('#nav a').focus(); });
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') { if (S.returning) { S.returning = false; renderPanel(); } else closeOverlays(); }
     if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && e.target.classList.contains('row-main')) {

@@ -232,3 +232,9 @@ To fill the review panel I added fictional supporting data: policy limits, recei
 - The reduced-motion path is CSS only and was not rendered.
 - The CSV download fires a blob link that headless Chrome doesn't save, so the file itself wasn't checked.
 - The theme-toggle click and ↑/↓ row movement were not exercised; focus was rendered, but navigation wasn't.
+
+## After the build: outside review
+
+A separate reviewer (a different model, in a fresh context) found two bugs that this self-review missed. Both are fixed in `after/index.html`, and the screenshots are unchanged.
+- At 390 px, focus could reach the page behind the open sheet's scrim; the nav drawer had the same gap. Everything behind an open sheet or drawer is now `inert`.
+- Returning a request dropped the optional message. The message now travels with the decision, Undo clears it, and the returned request shows it.

@@ -41,7 +41,9 @@ It found 65 of the 124 tells and grouped them into 15 ranked findings. The five 
 | White on the green Approve button is 2.28:1; footer text is 1.62:1 | Palette |
 
 Each finding names its tells and a fix in concrete values. The build fixed them and ran the
-review on its own output, which left five Low findings and no High or Medium.
+review on its own output, which left five Low findings and no High or Medium. An outside
+review then caught two bugs the self-review missed (focus escaping the mobile sheet, a dropped
+return message); both are fixed, and the build log records them.
 
 ## Install
 
