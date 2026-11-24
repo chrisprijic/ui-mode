@@ -42,6 +42,18 @@ test("unparseable color docs fail loudly instead of passing", () => {
   assert.deepEqual(failed(checkColor({ colorMd: "", depthMd: "" })), ["Parse color docs"]);
 });
 
+test("a malformed token value fails loudly instead of passing", () => {
+  for (const [from, to] of [
+    ["| `fg-3` | 0.54", "| `fg-3` | oops"],
+    ["| `bg` | 0.985 | 0.16 |", "| `bg` | 0.985 | |"],
+    ["| `border-input` | 0.60 | 0.55 |", "| `border-input` | 0.60 | 0.55x |"],
+    ["| 600 | 0.54 | 0.20 |", "| 600 | 0.54 | |"],
+  ]) {
+    const colorMd = replaceOnce(docs.colorMd, from, to);
+    assert.deepEqual(failed(checkColor({ ...docs, colorMd })), ["Parse color docs"], to);
+  }
+});
+
 test("structure checks catch a missing license, broken refs, and drifted counts", () => {
   const root = mkdtempSync(join(tmpdir(), "ui-mode-validate-"));
   const skill = join(root, "skills", "demo");

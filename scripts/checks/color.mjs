@@ -11,19 +11,26 @@ const CLAIM_TOLERANCE = 0.05; // stated ratios may round, within 5%
 
 const fmt = (n) => n.toFixed(2);
 const NUM = String.raw`(\d+(?:\.\d+)?)`;
+// A table cell holding only a number (light neutrals may add a "(~N:1)" claim); NaN otherwise.
+const cellNumber = (cell, suffix = "") =>
+  Number(cell.match(new RegExp(String.raw`^${NUM}${suffix}$`))?.[1] ?? Number.NaN);
+const CLAIM = String.raw`(?:\s+\(~?\d+(?:\.\d+)?:1\))?`;
 
 export function parseColorDocs({ colorMd, depthMd }) {
   const hue = Number(colorMd.match(new RegExp(String.raw`Worked example, an? \w+ at h ${NUM}`))?.[1]);
   const ramp = new Map(
-    tableRows(colorMd, ["Step", "L", "C"]).map(([step, L, C]) => [Number(step), { L: Number(L), C: Number(C) }]),
+    tableRows(colorMd, ["Step", "L", "C"]).map(([step, L, C]) => [
+      cellNumber(step),
+      { L: cellNumber(L), C: cellNumber(C) },
+    ]),
   );
   const tint = colorMd.match(new RegExp(String.raw`Tint every gray toward the brand hue at C ${NUM}-${NUM}`));
   const neutrals = new Map(
     tableRows(colorMd, ["Token"]).map(([token, light, dark]) => [
       token.replaceAll("`", ""),
       {
-        light: Number.parseFloat(light),
-        dark: Number.parseFloat(dark),
+        light: cellNumber(light, CLAIM),
+        dark: cellNumber(dark),
         claim: Number(light.match(/~?(\d+(?:\.\d+)?):1/)?.[1] ?? Number.NaN),
       },
     ]),
@@ -49,7 +56,10 @@ export function checkColor(docs) {
     !tintChroma.length && "neutral tint chroma",
     !["bg", "surface", "subtle", "fg-1", "fg-2", "fg-3"].every((t) => neutrals.has(t)) && "neutrals table",
     darkLevels.length !== 4 && "dark elevation levels in depth.md",
-    [...ramp.values()].some(({ L, C }) => Number.isNaN(L + C)) && "a ramp step value",
+    [...ramp].some(([step, { L, C }]) => Number.isNaN(step + L + C)) && "a ramp step value",
+    ...[...neutrals]
+      .filter(([, { light, dark }]) => Number.isNaN(light + dark))
+      .map(([token]) => `\`${token}\` value`),
   ].filter(Boolean);
   if (parseProblems.length) {
     add("fail", "Parse color docs", `could not read: ${parseProblems.join(", ")}`);
