@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acme Spend - Approvals Dashboard</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #f4f6fb;
+    color: #000;
+  }
+  .header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 22px 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 20px rgba(118, 75, 162, 0.35);
+  }
+  .header h1 { font-size: 26px; font-weight: 700; }
+  .header .sub { font-size: 13px; opacity: 0.85; margin-top: 4px; }
+  .header-actions { display: flex; gap: 12px; align-items: center; }
+  .btn {
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #fff;
+    outline: none;
+  }
+  .btn-primary { background: #667eea; }
+  .btn-success { background: #22c55e; }
+  .btn-gray { background: #94a3b8; }
+  .btn-white { background: #fff; color: #667eea; }
+  .btn-sm { padding: 6px 12px; font-size: 12px; }
+  .avatar-top {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+  .layout { display: flex; }
+  .sidebar {
+    width: 240px;
+    min-width: 240px;
+    background: #fff;
+    min-height: calc(100vh - 86px);
+    padding: 24px 16px;
+    border-right: 1px solid #000;
+  }
+  .sidebar a {
+    display: block;
+    padding: 11px 14px;
+    color: #6366f1;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .sidebar a.active { background: linear-gradient(90deg, #667eea, #764ba2); color: #fff; font-weight: 600; }
+  .main { flex: 1; padding: 32px 36px; }
+  .page-title { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .page-desc { color: #9ca3af; font-size: 15px; font-weight: 300; margin-bottom: 28px; }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; margin-bottom: 30px; }
+  .kpi {
+    background: #fff;
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    border: 1px solid #e5e7eb;
+  }
+  .kpi .icon { font-size: 28px; margin-bottom: 10px; }
+  .kpi .label { color: #9ca3af; font-size: 13px; text-transform: uppercase; font-weight: 600; }
+  .kpi .value { font-size: 30px; font-weight: 800; margin-top: 6px; }
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    border: 1px solid #e5e7eb;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+  .card-head h2 { font-size: 18px; font-weight: 700; }
+  .toolbar { display: flex; gap: 10px; }
+  .toolbar input, .toolbar select, .bulk select, .bulk textarea {
+    padding: 9px 12px;
+    border: 1px solid #000;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    background: #fff;
+  }
+  .toolbar input { width: 240px; }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    text-align: left;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #6b7280;
+    padding: 12px 10px;
+    border-bottom: 2px solid #e5e7eb;
+  }
+  td {
+    padding: 14px 10px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 14px;
+    text-align: left;
+  }
+  .badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+  }
+  .b-pending { background: #f59e0b; }
+  .b-approved { background: #22c55e; }
+  .b-rejected { background: #ef4444; }
+  .cat { display: inline-block; padding: 3px 9px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+  .cat-travel { background: #dbeafe; color: #1d4ed8; }
+  .cat-meals { background: #fce7f3; color: #be185d; }
+  .cat-software { background: #ede9fe; color: #6d28d9; }
+  .cat-equipment { background: #dcfce7; color: #15803d; }
+  .cat-training { background: #ffedd5; color: #c2410c; }
+  .actions { display: flex; gap: 6px; }
+  .bulk { display: flex; gap: 12px; align-items: flex-start; }
+  .bulk textarea { flex: 1; height: 44px; font-family: inherit; }
+  .footer-note { color: #c0c4cc; font-size: 12px; text-align: center; margin-top: 16px; }
+</style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <h1>💼 Acme Spend</h1>
+      <div class="sub">Pinecrest Outdoor Co. · Smart Expense Management ✨</div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-white">📤 Export</button>
+      <button class="btn btn-success">➕ New Request</button>
+      <div class="avatar-top">👩‍💼</div>
+    </div>
+  </div>
+
+  <div class="layout">
+    <nav class="sidebar">
+      <a href="#" class="active">📊 Dashboard</a>
+      <a href="#">✅ Approvals</a>
+      <a href="#">🧾 My Expenses</a>
+      <a href="#">👥 Team</a>
+      <a href="#">📈 Reports</a>
+      <a href="#">💳 Cards</a>
+      <a href="#">⚙️ Settings</a>
+      <a href="#">❓ Help</a>
+    </nav>
+
+    <main class="main">
+      <div class="page-title">Welcome back, Maya! 👋</div>
+      <div class="page-desc">Here's an overview of your team's expense requests. Review and take action on pending items below.</div>
+
+      <div class="kpis">
+        <div class="kpi">
+          <div class="icon">📋</div>
+          <div class="label">Pending Requests</div>
+          <div class="value">5</div>
+        </div>
+        <div class="kpi">
+          <div class="icon">💰</div>
+          <div class="label">Total Pending</div>
+          <div class="value">$4112.93</div>
+        </div>
+        <div class="kpi">
+          <div class="icon">✅</div>
+          <div class="label">Approved</div>
+          <div class="value">2</div>
+        </div>
+        <div class="kpi">
+          <div class="icon">❌</div>
+          <div class="label">Rejected</div>
+          <div class="value">1</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h2>📝 Expense Requests</h2>
+          <div class="toolbar">
+            <input type="text" placeholder="🔍 Search...">
+            <select>
+              <option>Status: All</option>
+              <option>Pending</option>
+              <option>Approved</option>
+              <option>Rejected</option>
+            </select>
+            <select>
+              <option>Category: All</option>
+              <option>Travel</option>
+              <option>Meals</option>
+              <option>Software</option>
+              <option>Equipment</option>
+              <option>Training</option>
+            </select>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Description</th>
+              <th>Category</th>
+              <th>Amount</th>
+              <th>Submitted</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Priya Raman</td>
+              <td>Flight SEA → DEN, regional sales summit</td>
+              <td><span class="cat cat-travel">Travel</span></td>
+              <td>$1248.6</td>
+              <td>2026-11-21T09:42:17Z</td>
+              <td><span class="badge b-pending">Pending</span></td>
+              <td class="actions"><button class="btn btn-success btn-sm">Approve</button><button class="btn btn-primary btn-sm">Reject</button><button class="btn btn-gray btn-sm">View</button></td>
+            </tr>
+            <tr>
+              <td>Tomás Herrera</td>
+              <td>Client dinner – Alder &amp; Pine (4 guests)</td>
+              <td><span class="cat cat-meals">Meals</span></td>
+              <td>$326.4</td>
+              <td>2026-11-20T21:15:03Z</td>
+              <td><span class="badge b-pending">Pending</span></td>
+              <td class="actions"><button class="btn btn-success btn-sm">Approve</button><button class="btn btn-primary btn-sm">Reject</button><button class="btn btn-gray btn-sm">View</button></td>
+            </tr>
+            <tr>
+              <td>Jun Watanabe</td>
+              <td>Figma Professional – annual seat</td>
+              <td><span class="cat cat-software">Software</span></td>
+              <td>$180</td>
+              <td>2026-11-20T14:08:51Z</td>
+              <td><span class="badge b-pending">Pending</span></td>
+              <td class="actions"><button class="btn btn-success btn-sm">Approve</button><button class="btn btn-primary btn-sm">Reject</button><button class="btn btn-gray btn-sm">View</button></td>
+            </tr>
+            <tr>
+              <td>Amara Nwosu</td>
+              <td>Wilderness First Responder recertification</td>
+              <td><span class="cat cat-training">Training</span></td>
+              <td>$2310</td>
+              <td>2026-11-19T16:30:00Z</td>
+              <td><span class="badge b-pending">Pending</span></td>
+              <td class="actions"><button class="btn btn-success btn-sm">Approve</button><button class="btn btn-primary btn-sm">Reject</button><button class="btn btn-gray btn-sm">View</button></td>
+            </tr>
+            <tr>
+              <td>Ellis Brandt</td>
+              <td>Rideshare, airport → hotel</td>
+              <td><span class="cat cat-travel">Travel</span></td>
+              <td>$47.93</td>
+              <td>2026-11-18T23:51:44Z</td>
+              <td><span class="badge b-pending">Pending</span></td>
+              <td class="actions"><button class="btn btn-success btn-sm">Approve</button><button class="btn btn-primary btn-sm">Reject</button><button class="btn btn-gray btn-sm">View</button></td>
+            </tr>
+            <tr>
+              <td>Sofia Lindqvist</td>
+              <td>27" monitor for home office</td>
+              <td><span class="cat cat-equipment">Equipment</span></td>
+              <td>$412</td>
+              <td>2026-11-17T10:12:29Z</td>
+              <td><span class="badge b-approved">Approved</span></td>
+              <td class="actions"><button class="btn btn-gray btn-sm">View</button></td>
+            </tr>
+            <tr>
+              <td>Dev Malhotra</td>
+              <td>Hotel, 2 nights – Boulder trade show</td>
+              <td><span class="cat cat-travel">Travel</span></td>
+              <td>$538.22</td>
+              <td>2026-11-15T08:03:12Z</td>
+              <td><span class="badge b-approved">Approved</span></td>
+              <td class="actions"><button class="btn btn-gray btn-sm">View</button></td>
+            </tr>
+            <tr>
+              <td>Hannah Cole</td>
+              <td>Team lunch (no itemized receipt)</td>
+              <td><span class="cat cat-meals">Meals</span></td>
+              <td>$214.75</td>
+              <td>2026-11-14T13:27:40Z</td>
+              <td><span class="badge b-rejected">Rejected</span></td>
+              <td class="actions"><button class="btn btn-gray btn-sm">View</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>⚡ Bulk Actions</h2></div>
+        <div class="bulk">
+          <select>
+            <option>Select action...</option>
+            <option>Approve all pending</option>
+            <option>Reject all pending</option>
+          </select>
+          <textarea placeholder="Add a comment (optional)"></textarea>
+          <button class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+
+      <div class="footer-note">© 2026 Acme Spend · Powered by AI 🤖</div>
+    </main>
+  </div>
+</body>
+</html>
