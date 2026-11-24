@@ -20,7 +20,7 @@ A **ramp** is an 11-step scale, 50 (lightest) to 950 (darkest). Build every ramp
 1. Anchor 600. Pick the color that will fill a solid button. It must carry white text at 4.5:1 or better (≈ L 0.52-0.56).
 2. Set the ends by hand. 50 is a tint you could use as a page wash (L ≈ 0.97); 950 is dark enough for text on that tint (L ≈ 0.24).
 3. Space the lightness. Fill the steps between so `L` drops in near-even increments, slightly wider in the middle.
-4. Shape the chroma. Peak chroma at 500-600 and taper toward both ends, but keep the ends colored: 50 at C ≥ 0.015, 950 at C ≥ 0.06. A ramp whose ends go gray reads washed out at the top and muddy at the bottom.
+4. Shape the chroma. Peak chroma at 500-600 and taper toward both ends, but keep the ends colored: give 50 as much chroma as the gamut allows at its lightness (a blue tops out near C 0.014), and keep 950 at C ≥ 0.06. A ramp whose ends go gray reads washed out at the top and muddy at the bottom.
 5. Hold the hue. OKLCH keeps perceived hue stable, so most ramps need no drift. If a step looks off-hue (yellows turning green when dark, blues turning purple when light), nudge `h` by up to 8° across the whole ramp.
 6. Clip to gamut. Where a step falls outside sRGB, lower its chroma rather than shifting its lightness.
 7. Freeze. No new shade enters mid-build. A missing shade sends you back to the ramp; never patch it with an inline hex.
@@ -29,11 +29,11 @@ Worked example, a blue at h 262:
 
 | Step | L | C | Typical role |
 |---|---|---|---|
-| 50 | 0.97 | 0.02 | tint background |
-| 100 | 0.94 | 0.04 | tint background, selected row |
-| 200 | 0.88 | 0.08 | tint border |
-| 300 | 0.80 | 0.12 | dark-mode hover |
-| 400 | 0.70 | 0.16 | dark-mode accent, dark-mode links |
+| 50 | 0.97 | 0.014 | tint background |
+| 100 | 0.94 | 0.028 | tint background, selected row |
+| 200 | 0.88 | 0.058 | tint border |
+| 300 | 0.80 | 0.10 | dark-mode hover |
+| 400 | 0.70 | 0.155 | dark-mode accent, dark-mode links |
 | 500 | 0.62 | 0.19 | icons on light tints, chart series |
 | 600 | 0.54 | 0.20 | solid fill, buttons, light-mode links |
 | 700 | 0.47 | 0.18 | hover |
@@ -41,29 +41,33 @@ Worked example, a blue at h 262:
 | 900 | 0.32 | 0.11 | text on tint |
 | 950 | 0.24 | 0.08 | darkest text, dark-mode tint background |
 
+Steps 50-400 sit at the sRGB edge, so their chroma is the gamut maximum for their lightness (step 6).
+
 Roles by step: solid fill 600 · hover 700 · pressed 800 · tint background 50/100 · text on tint 800/900 · links 600 (light) / 400 (dark) · dark-mode accent 400, its hover 300.
 
 ## Neutrals
 Tint every gray toward the brand hue at C 0.005-0.015: cool brands get cool grays, warm brands warm ones. Pure `#000` and pure gray read as unconsidered.
 
-| Token | Light (L) | Dark (L) | Use |
+| Token | Light L (worst contrast) | Dark L | Use |
 |---|---|---|---|
 | `bg` | 0.985 | 0.16 | page |
 | `surface` | 1.0 | 0.19 | cards, panels, inputs |
 | `subtle` | 0.965 | 0.22 | app frame, sidebar, hover rows, section bands |
 | `border` | 0.90 | 0.30 | default hairline |
-| `border-strong` | 0.82 | 0.38 | input outlines, dividers that must read |
-| `fg-1` | 0.21 (~17:1) | 0.93 | headings, primary text |
-| `fg-2` | 0.44 (~7.8:1) | 0.75 | body secondary, metadata |
-| `fg-3` | 0.56 (~4.6:1) | 0.62 | placeholders, tertiary labels; the floor for readable text |
+| `border-strong` | 0.82 | 0.38 | dividers that must read |
+| `border-input` | 0.60 | 0.55 | outline of an input with no fill cue (≥ 3:1) |
+| `fg-1` | 0.21 (~16:1) | 0.93 | headings, primary text |
+| `fg-2` | 0.44 (~7.0:1) | 0.75 | body secondary, metadata |
+| `fg-3` | 0.54 (~4.6:1) | 0.64 | placeholders, tertiary labels; the floor for readable text |
 
+- Contrast is the worst case across `bg`, `surface`, and `subtle`; dark values clear 4.5:1 on every dark elevation level (`depth.md`, Dark mode).
 - Three text tiers cover almost every screen. Disabled text may drop below `fg-3` only because it carries no information the user needs.
 - The app frame (sidebar, top bar) sits one step off the content surface (`subtle` vs `surface`), so content reads as the lit area.
 - A product UI needs about four surface layers, one or two border strengths, and three text tiers. More than that is a token leak.
 - Buttons rise in darkness with importance: ghost (no fill), `subtle` fill, then solid 600 or `fg-1` fill with white text.
 
 ## Contrast
-- Text needs 4.5:1, and large text (≥ 24px, or ≥ 18.66px bold) needs 3:1. UI graphics, input outlines that identify the control, and focus rings need 3:1 (WCAG 2.2).
+- Text needs 4.5:1, and large text (≥ 24px, or ≥ 18.66px bold) needs 3:1. UI graphics, input outlines that identify the control (`border-input`), and focus rings need 3:1 (WCAG 2.2).
 - If white on a mid-tone fails, invert the pairing: 800/900 text on a 50/100 tint of the same hue. Keep white-on-600 for the primary action.
 - Secondary text on a colored surface uses the surface's own hue, lighter or darker, at reduced chroma. Gray on color looks dirty and usually fails contrast.
 - For colored text on a colored surface, move the text further along the same ramp (e.g. 900 on 100) before reaching for white.
@@ -102,7 +106,7 @@ Build dark mode as a sibling palette. Inverting the light one doesn't work.
 - Follow the system setting by default (`prefers-color-scheme`); offer an override.
 
 ## Charts
-- For the series palette, fix L (≈ 0.62-0.70) and C (≈ 0.14-0.18) in OKLCH and step the hue 25-40° per series, so no series shouts louder than another. HSL equal-lightness palettes make greens and yellows glare.
+- For the series palette, fix L (≈ 0.62-0.70) in OKLCH, aim for C ≈ 0.14-0.18, and step the hue 25-40° per series, so no series shouts louder than another. Yellows (h ≈ 70-110) and teals or cyans (h ≈ 170-230) can't reach that chroma in sRGB at that lightness; lower their chroma, never their lightness. HSL equal-lightness palettes make greens and yellows glare.
 - Avoid a single-ramp palette for categories (adjacent series become indistinguishable) and all-gray palettes (lifeless).
 - The comparison period is a `fg-3` line, dashed or thinner.
 - For color-blind safety, vary lightness between adjacent series and add direct labels or markers.

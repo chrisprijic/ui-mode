@@ -13,7 +13,7 @@ Specs for common components. Tokens come from `color.md`, `type.md`, `layout.md`
 
 ## Forms
 - Labels sit above inputs and stay visible. Placeholder text is an example value ("e.g. Northwind Ltd"), never the label. Label to input `space-1`/`space-2`; field to field `space-4`; group to group `space-6`.
-- Inputs are 40px tall (44px touch) with a `surface` fill, `radius-md`, and 16px text on mobile. When the outline is the only cue it must reach 3:1 against the surface (≈ L 0.60); otherwise use a `subtle` fill with a `border` hairline.
+- Inputs are 40px tall (44px touch) with a `surface` fill, `radius-md`, and 16px text on mobile. When the outline is the only cue, use `border-input` (L 0.60, ≥ 3:1 on every surface); otherwise use a `subtle` fill with a `border` hairline.
 - Focus ring: `:focus-visible { outline: 2px solid var(--primary-600); outline-offset: 2px; }` (400 in dark mode), ≥ 3:1 against neighbors. Every focusable element shows it.
 - Validate on blur, then live once a field has errored. An error shows a danger border, an icon, and text under the field saying how to fix it. Keep the user's input. Long forms add a summary at the top linking to each error.
 - Warnings (soft issues) use the warning ramp and never block submit.
